@@ -27,7 +27,7 @@ public class EssentialSetupTweakerTransformer implements IExplicitTransformer {
                             methodInsnNode.desc.equals("(Ljava/lang/ClassLoader;Ljava/net/URL;)V")
                     ) {
                         methodInsnNode.owner = "com/cleanroommc/fugur/helper/HookHelper";
-                        methodInsnNode.name = "addURL"
+                        methodInsnNode.name = "addURL";
                     }
                 }
             }
