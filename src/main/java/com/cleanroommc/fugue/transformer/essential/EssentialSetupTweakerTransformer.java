@@ -2,14 +2,14 @@ package com.cleanroommc.fugue.transformer.essential;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.tree.ClassNode;
-import org.objectweb.asm.tree.MethodInsnNode;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.tree.*;
 import top.outlands.foundation.IExplicitTransformer;
 
 //Target: [
 //      gg.essential.loader.stage0.EssentialSetupTweaker
 // ]
-public class EssentialSetupTweakerTransformer implements IExplicitTransformer {
+public class EssentialSetupTweakerTransformer implements IExplicitTransformer, Opcodes {
 
     @Override
     public byte[] transform(byte[] bytes) {
@@ -18,18 +18,12 @@ public class EssentialSetupTweakerTransformer implements IExplicitTransformer {
         classReader.accept(classNode, 0);
 
         for (var method : classNode.methods) {
-            var instructions = method.instructions;
-            for (var insnNode : method.instructions) {
-                if (insnNode instanceof MethodInsnNode methodInsnNode) {
-                    if (
-                            methodInsnNode.owner.equals("gg/essential/loader/stage0/EssentialSetupTweaker") &&
-                            methodInsnNode.name.equals("addUrlHack") &&
-                            methodInsnNode.desc.equals("(Ljava/lang/ClassLoader;Ljava/net/URL;)V")
-                    ) {
-                        methodInsnNode.owner = "com/cleanroommc/fugur/helper/HookHelper";
-                        methodInsnNode.name = "addURL";
-                    }
-                }
+            if ("addUrlHack".equals(method.name)) {
+                method.instructions.clear();
+                method.visitVarInsn(ALOAD, 0);
+                method.visitVarInsn(ALOAD, 1);
+                method.visitMethodInsn(INVOKESTATIC, "com/cleanroommc/fugur/helper/HookHelper", "addURL", "(Ljava/lang/ClassLoader;Ljava/net/URL;)V", false);
+                method.visitInsn(RETURN);
             }
         }
 
