@@ -60,7 +60,7 @@ public class HookHelper {
         }
     }
 
-    public static URL[] addURL(ClassLoader loader, URL url) {
+    public static void addURL(ClassLoader loader, URL url) {
         try{
             Field UCP = LaunchClassLoader.class.getClassLoader().getClass().getSuperclass().getDeclaredField("ucp");
             UCP.setAccessible(true);
