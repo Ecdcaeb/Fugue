@@ -60,6 +60,18 @@ public class HookHelper {
         }
     }
 
+    public static URL[] addURL(ClassLoader loader, URL url) {
+        try{
+            Field UCP = LaunchClassLoader.class.getClassLoader().getClass().getSuperclass().getDeclaredField("ucp");
+            UCP.setAccessible(true);
+            Object urls = UCP.get(loader);
+            Class<?> urlClassPath = Class.forName("jdk.internal.loader.URLClassPath");
+            Method get = urlClassPath.getMethod("addURL");
+            get.invoke(urls);
+        } catch (NoSuchFieldException | IllegalAccessException | ClassNotFoundException | NoSuchMethodException | InvocationTargetException e) {
+        }
+    }
+
     public static List<IClassTransformer> getTransformers() {
         return TransformerDelegate.getTransformers();
     }

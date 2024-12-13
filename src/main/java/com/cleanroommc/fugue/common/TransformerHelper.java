@@ -224,6 +224,9 @@ public class TransformerHelper {
                     "de.johni0702.minecraft.view.impl.common.ExtensionsKt"
             );
         }
+        if (FugueConfig.modPatchConfig.enableEssential) {
+            TransformerDelegate.registerExplicitTransformer(new com.cleanroommc.fugue.transformer.essential.EssentialSetupTweakerTransformer(), "gg.essential.loader.stage0.EssentialSetupTweaker");
+        }
 
         if (FugueConfig.getCodeSourcePatchTargets.length > 0) {
             TransformerDelegate.registerExplicitTransformer(new ITweakerTransformer(), FugueConfig.getCodeSourcePatchTargets);
