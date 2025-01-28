@@ -2,11 +2,11 @@
 Fix dead mods. [Explain](https://www.etymonline.com/cn/word/fugue)
 
 Also check [The Fugue Plane](https://forgottenrealms.fandom.com/wiki/Fugue_Plane).
-## Stable
-https://github.com/CleanroomMC/Fugue/releases/tag/0.5.4
 
-## Unstable
+## Download
 https://github.com/CleanroomMC/Fugue/releases/latest
+
+If you are still using 0.1.0 Cleanroom, use 0.5.4. But that's not recommended.
 
 ## List
 * Charset
@@ -30,7 +30,7 @@ https://github.com/CleanroomMC/Fugue/releases/latest
 * OpenDisks
 * OpenSecurity
 * Enchantments Control
-* GregTech CE Unofficial (Temporary)
+* GregTech CE Unofficial (Before 2.8.8)
 * TFC Medicinal
 * Mcjty Core
 * LoliASM
@@ -47,6 +47,31 @@ https://github.com/CleanroomMC/Fugue/releases/latest
 * Simply Hot Spring
 * OpenModsLib
 * Valkyrie (Temporary)
+* ReplayMod
+* Thaumic Speedup (Temporary)
+* Astral Sorcery
+* Armourer's Workshop
+* Vampirism
+* MAGE (Graphical Tweaks)
+* Extra Utilities 2
+* In Control!
+* More Refined Storage
+* Better Formatting Code
+* 5zig
+* Ears
+* Colytra
+* Crossbow
+* Polyfrost mods
+* Carry On
+* Litematica
+* Better Records
+* Aqua Acrobatics
+* Refined Relocation 2
+* Integrated Proxy
+* Thaumic Fixes
+* Erebus Fix
+* Uncrafting Blacklist
+* Unilib
 
 ## Note
 Add + to start of the file if it's not there.

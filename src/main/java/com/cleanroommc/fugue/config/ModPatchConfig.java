@@ -5,6 +5,10 @@ import net.minecraftforge.common.config.Config;
 public class ModPatchConfig {
     @Config.Name("Enable Ender Core Patch")
     public boolean enableEnderCore = true;
+    @Config.Comment({
+            "This patch is only for Advanced Rocketry by zmaster587.",
+            "Advanced Rocketry - Reworked by MarvinEckhardt doesn't need this!"
+    })
     @Config.Name("Enable Advanced Rocketry Patch")
     public boolean enableAR = true;
     @Config.Name("Enable Shoulder Surfing Reloaded Patch")
@@ -15,8 +19,6 @@ public class ModPatchConfig {
     public boolean enableTickCentral = true;
     @Config.Name("Enable Logistics Pipes Patch")
     public boolean enableLP = true;
-    @Config.Name("Enable Patch For OpenFM/OpenDisks/OpenSecurity")
-    public boolean enableOpenAddons = true;
     @Config.Name("Enable Enchantment Control Patch")
     public boolean enableEC = true;
     @Config.Name("Enable Charset lib Patch")
@@ -56,7 +58,6 @@ public class ModPatchConfig {
     public boolean enableSmoothFont = true;
     @Config.Name("Enable Custom Skin Loader Patch")
     public boolean enableCSL = true;
-
     @Config.Name("Enable XNet Patch")
     public boolean enableXNet = true;
     @Config.Name("Enable Howling Moon Patch")
@@ -81,4 +82,75 @@ public class ModPatchConfig {
     public boolean enableValkyrie = true;
     @Config.Name("Enable OpenModsLib Patch")
     public boolean enableOpenModsLib = true;
+    @Config.Name("Enable ReplayMod Patch")
+    public boolean enableReplayMod = true;
+    @Config.Name("Fix Thaumic Speedup Loader")
+    public boolean fixTahumicSpeedup = true;
+    @Config.Name("Enable Astral Sorcery Patch")
+    public boolean enableAstralSorcery = true;
+    @Config.Name("Enable Armourer's Workshop Patch")
+    public boolean enableArmourersWorkshop = true;
+    @Config.Name("Enable Vampirism Patch")
+    public boolean enableVampirism = true;
+    @Config.Name("Enable MAGE (Graphical Tweaks) Patch")
+    public boolean enableMage = true;
+    @Config.Name("Enable Extra Utilities Patch")
+    public boolean enableExtraUtilities = true;
+    @Config.Name("Enable In Control! Patch")
+    public boolean enableInControl = true;
+    @Config.Name("Enable More Refined Storage Patch")
+    public boolean enableMoreRefinedStorage = true;
+    @Config.Name("Enable HEI Patch (temporary)")
+    public boolean enableHEI = true;
+    @Config.Name("Enable Better Formatting Code Patch")
+    public boolean enableBetterFC = true;
+    @Config.Name("Enable 5zig Patch")
+    public boolean enable5zig = true;
+    @Config.Name("Enable Ears Patch")
+    @Config.Comment("This mod is packing a copy of ASM itself, wtf")
+    public boolean enableEars = true;
+    @Config.Name("Enable Colytra Patch")
+    public boolean enableColytra = true;
+    @Config.Name("Enable InfinityLib Patch")
+    public boolean enableInfLib = true;
+    @Config.Name("Enable Crossbow(jbredwards) Patch")
+    public boolean enableCrossbow = true;
+    @Config.Name("Enable Patch to PolyForst mods")
+    public boolean enablePolyForst = true;
+    @Config.Name("Enable Dropt Patch")
+    public boolean enableDropt = true;
+    @Config.Name("Enable Carryon Patch")
+    public boolean enableCarryon = true;
+    @Config.Name("Enable Litematica Patch")
+    public boolean enableLitematica = true;
+    @Config.Name("Enable Better Records Patch")
+    public boolean enableBetterRecords = true;
+    @Config.Name("Enable Aqua Acrobatics Patch")
+    public boolean enableAquaAcrobatics = true;
+    @Config.Name("Enable Refined Relocation 2 Patach")
+    public boolean enableRefinedRelocation2Patch = true;
+    @Config.Name("Enable Integrated Proxy Patch")
+    public boolean enableIntegratedProxyPatch = true;
+    @Config.Name("Enable Thaumic Fixes Patch")
+    public boolean enableThaumicFixesPatch = true;
+    @Config.Name("Enable Erebus Fix Patch")
+    public boolean enableErebusFixPatch = true;
+    @Config.Name("Enable Uncrafting Blacklist Patch")
+    public boolean enableUncraftingBlacklist = true;
+    @Config.Name("Enable Calculator Patch")
+    public boolean enableCalculator = true;
+    @Config.Comment("This patches the CraftPresence spam log")
+    @Config.Name("Enable Unilib Patch")
+    public boolean enableUnilib = true;
+    @Config.Name("Enable BetterPortals Patch")
+    public boolean enableBetterPortals = true;
+    @Config.Name("Enable Essential Patch")
+    public boolean enableEssential = true;
+    @Config.Comment("Only use with dj2addons 1.2.1.1 or lower")
+    @Config.Name("Enable Divine Journey 2 Addons Patch")
+    public boolean enableDivineJourney2Addons = true;
+    @Config.Name("Enable LightAndShadow Patch")
+    public boolean enableLightAndShadow = true;
+    @Config.Name("Enable JourneyMap Patch")
+    public boolean enableJourneyMap = true;
 }

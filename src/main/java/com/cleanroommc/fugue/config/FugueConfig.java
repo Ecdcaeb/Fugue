@@ -10,7 +10,12 @@ import java.util.stream.Stream;
 @Config(modid = Reference.MOD_ID, name = Reference.MOD_ID)
 @Config.RequiresMcRestart
 public class FugueConfig {
-    @Config.Comment("Fix and patches for certain mods.")
+    @Config.Comment("""
+            Fix and patches for certain mods.
+            WARNING: Enable too much patches may lower performance.
+            If you are a pack maker, just enable what you need.
+            """
+    )
     public static ModPatchConfig modPatchConfig = new ModPatchConfig();
 
     @Config.Comment("""
@@ -29,6 +34,7 @@ public class FugueConfig {
             "com.fantasticsource.noadvancements.NoAdvancements",
             "com.codetaylor.mc.athenaeum.util.Injector",
             "epicsquid.mysticallib.hax.Hax",
+            "epicsquid.gadgetry.core.hax.Hax",
             "vazkii.quark.world.feature.TreeVariants",
             "vazkii.quark.base.handler.OverrideRegistryHandler",
             "codechicken.lib.reflect.ReflectionManager",
@@ -46,6 +52,20 @@ public class FugueConfig {
             "com.codetaylor.mc.athenaeum.util.Injector",
             "org.valkyrienskies.mod.common.ValkyrienSkiesMod",
             "com.legacy.lostaether.client.LostClientEvents",
+            "com.noobanidus.variegated.compat.bloodmagic.handlers.HellfireSpeed",
+            "ic2.core.util.ReflectionUtil",
+            "net.arsenalnetwork.betterhud.h",
+            "com.github.alexthe666.iceandfire.entity.EntitySnowVillager",
+            "betterwithmods.util.ReflectionLib",
+            "sedridor.B3M.ClientProxy",
+            "com.ferreusveritas.unifine.ThermalDynamicsActive",
+            "com.kirdow.itemlocks.util.reflect.ReflectClass",
+            "eos.moe.dragoncore.za",
+            "com.mcmoddev.lib.init.Items",
+            "eos.moe.dragoncore.pn",
+            "tragicneko.tragicmc.TragicMC",
+            "energon.srpholiday.client.inject.render.SRPHReflect",
+            "maxhyper.dynamictreestbl.compat.RegistryReplacements",
     };
 
     @Config.Comment(
@@ -78,7 +98,7 @@ public class FugueConfig {
 
     @Config.Comment(
             """
-            Java 8's UUID creation if flawed. It allow invalid UUIDs to be created.
+            Java 8's UUID creation is flawed. It allow invalid UUIDs to be created.
             This was fixed in later Java, but old mods still need a solution.
             Target classes here will be patched to use a helper method we provide."""
     )
@@ -88,6 +108,8 @@ public class FugueConfig {
             "tk.zeitheron.solarflux.items.ItemEfficiencyUpgrade",
             "tk.zeitheron.solarflux.items.ItemTransferRateUpgrade",
             "tk.zeitheron.solarflux.items.ItemCapacityUpgrade",
+            "iblis.player.SharedIblisAttributes",
+            "com.Shultrea.Rin.Utility_Sector.LivingAttackFixerHandler",
     };
     @Config.Comment(
             """
@@ -111,6 +133,7 @@ public class FugueConfig {
             Non-Update was gone with Security Manager.
             As a workaround, These targets will be banned from making connections with URL.openStream().
             If you don't need a proxy to access github, you could empty this setting.
+            The Secret Room entry should be kept - the url now points to an 404 page which will crash the game.
             This may block more connection than update checks, so if anything gone wrong please open an issue.""")
     @Config.Name("Connection Blocking List")
     public static String[] nonUpdateTargets = new String[] {
@@ -120,11 +143,12 @@ public class FugueConfig {
             "com.buuz135.industrial.proxy.CommonProxy",
             "micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore",
             "vazkii.quark.base.client.ContributorRewardHandler$ThreadContributorListLoader",
+            "com.wynprice.secretroomsmod.handler.HandlerUpdateChecker",
     };
 
     @Config.Comment(
             """
-            Foundation comes with some ABI changes.
+            Foundation (the LaunchWrapper under Java 21+) comes with some ABI changes.
             If you got a crash says some methods/fields in LaunchClassLoader not found, that's the remapper you want.
             As a workaround, These targets will be redirected to new API.""")
     @Config.Name("Launch Wrapper API Change Patching List")
@@ -135,6 +159,7 @@ public class FugueConfig {
             "com.cleanroommc.groovyscript.sandbox.transformer.AsmDecompileHelper",
             "com.cleanroommc.modularui.core.ModularUICore",
             "openeye.logic.ModMetaCollector",
+            "com.forgeessentials.core.preloader.asminjector.ASMUtil",
     };
 
     @Config.Comment(
@@ -152,17 +177,57 @@ public class FugueConfig {
     @Config.Comment(
             """
             ITweaker classes loaded in LCL will be defined in a different code source like file:jar:.
+            This will cause errors like java.lang.IllegalArgumentException: URI is not hierarchical
             Add them to list could redirect their toURI() to a decent jar URL.
             """)
-    @Config.Name("getCodeSource() Patch List")
+    @Config.Name("getCodeSource() Patching List")
     public static String[] getCodeSourcePatchTargets = new String[] {
             "pm.c7.pmr.tweaker.MixinLoadingTweaker",
             "customskinloader.forge.platform.IFMLPlatform$FMLPlatformInitializer",
             "pcl.opendisks.OpenDisksUnpack",
             "pcl.opensecurity.util.SoundUnpack",
             "pcl.OpenFM.misc.DepLoader",
+            "pcl.OpenFM.misc.OFMDepLoader",
             "optifine.OptiFineClassTransformer",
-            "snownee.minieffects.core.CoreMod"
+            "snownee.minieffects.core.CoreMod",
+            "com.replaymod.core.tweaker.ReplayModTweaker",
+            "com.replaymod.core.LoadingPlugin",
+            "zone.rong.loliasm.common.crashes.ModIdentifier",
+            "online.flowerinsnow.greatscrollabletooltips.tweaker.GreatScrollableTooltipsTweaker",
+            "com.wjx.kablade.mixin.KabladeMixinTweak",
+            "eos.moe.dragoncore.tweaker.ForgePlugin",
+            "advancedshader.core.Core",
+            "com.forgeessentials.core.preloader.FELaunchHandler",
+            "eos.moe.armourers.tweaker.ForgePlugin",
+            "gg.essential.loader.stage2.jvm.ForkedJvm",
+            "gg.essential.main.Bootstrap"
+    };
+
+    @Config.Comment(
+            """
+            Used when mouse wheel related operation being weird.
+            Classes in this list will get their Mouse.getDWheel() and Mouse.getEventDWheel() redirected.
+            Consult Cleanroom developers before using it!
+            """)
+    @Config.Name("Mouse.getEventDWheel() Patching List")
+    public static String[] mouseWheelPatchTargets = new String[] {
+            "mekanism.client.ClientTickHandler",
+            "journeymap.client.ui.fullscreen.Fullscreen",
+            "xaero.map.gui.ScreenBase",
+            "xaero.map.gui.GuiMap",
+            "betterquesting.api2.client.gui.GuiContainerCanvas",
+            "betterquesting.api2.client.gui.GuiScreenCanvas",
+            "yalter.mousetweaks.MouseState",
+            "yalter.mousetweaks.SimpleMouseState",
+            "com.feed_the_beast.ftblib.lib.gui.GuiWrapper",
+            "com.feed_the_beast.ftblib.lib.gui.GuiContainerWrapper",
+            "com.github.terminatornl.laggoggles.client.gui.GuiProfile",
+    };
+
+    @Config.Comment("Use this when you encountered ClassCircularityError.")
+    @Config.Name("Extra Transform Exclusion")
+    public static String[] extraTransformExclusions = new String[] {
+            "org.vivecraft.",
     };
 
     @Config.Comment(

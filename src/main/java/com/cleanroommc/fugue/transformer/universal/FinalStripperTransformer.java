@@ -30,8 +30,9 @@ public class FinalStripperTransformer implements IExplicitTransformer {
                 Fugue.LOGGER.debug("Stripping final modifier of {} from {}", ctField2.getName(), ctField2.getDeclaringClass().getName());
             });
             bytes = cc.toBytecode();
+            cc.defrost();
         } catch (Throwable t) {
-            Fugue.LOGGER.error(t);
+            Fugue.LOGGER.error("Exception {} on {}", t, this.getClass().getSimpleName());
         }
         return bytes;
     }

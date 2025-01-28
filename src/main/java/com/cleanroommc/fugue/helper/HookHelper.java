@@ -1,22 +1,30 @@
 package com.cleanroommc.fugue.helper;
 
 import com.cleanroommc.fugue.common.Fugue;
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
 import net.minecraft.launchwrapper.IClassTransformer;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.launchwrapper.LaunchClassLoader;
+import org.apache.commons.io.FileUtils;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.objectweb.asm.Opcodes;
+import org.lwjgl.opengl.GL11;
+import oshi.SystemInfo;
 import top.outlands.foundation.TransformerDelegate;
 import top.outlands.foundation.boot.ActualClassLoader;
-import top.outlands.foundation.boot.JVMDriverHolder;
-import top.outlands.foundation.boot.UnsafeHolder;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.net.*;
 import java.nio.file.Paths;
 import java.security.CodeSource;
+import java.security.ProtectionDomain;
 import java.util.*;
+import java.util.function.Function;
 
 public class HookHelper {
     public static boolean isInterface(int opcode) {
@@ -47,7 +55,12 @@ public class HookHelper {
     }
 
     public static URI toURI(URL url) throws IOException, URISyntaxException {
-        return ((JarURLConnection) url.openConnection()).getJarFileURL().toURI();
+        URLConnection connection = url.openConnection();
+        if (connection instanceof JarURLConnection jarURLConnection) {
+            return jarURLConnection.getJarFileURL().toURI();
+        } else  {
+            return url.toURI();
+        }
     }
 
     public static List<IClassTransformer> getTransformers() {
@@ -81,12 +94,54 @@ public class HookHelper {
     }
 
     public static Class<?> defineClass(String name, byte[] bytes, int off, int len, CodeSource codeSource) {
+        Fugue.LOGGER.info("Defining class: {}", name);
         if (grsMap.containsKey(name)) {
             return grsMap.get(name);
         } else {
             return grsMap.computeIfAbsent(name, k -> Launch.classLoader.defineClass(k, bytes, codeSource));
         }
     }
+
+    public static Class<?> defineClass(String name, byte[] bytes, int off, int len, ProtectionDomain domain) {
+        Fugue.LOGGER.info("Defining class: {}", name);
+        if (grsMap.containsKey(name)) {
+            return grsMap.get(name);
+        } else {
+            return grsMap.computeIfAbsent(name, k -> Launch.classLoader.defineClass(k, bytes));
+        }
+    }
+
+    public static Class<?> defineClass(String name, byte[] bytes) {
+        Fugue.LOGGER.info("Defining class: {}", name);
+        if (grsMap.containsKey(name)) {
+            return grsMap.get(name);
+        } else {
+            return grsMap.computeIfAbsent(name, k -> Launch.classLoader.defineClass(k, bytes));
+        }
+    }
+
+    public static Class<?> defineClass(byte[] bytes, String name) {
+        Fugue.LOGGER.info("Defining class: {}", name);
+        if (grsMap.containsKey(name)) {
+            return grsMap.get(name);
+        } else {
+            return grsMap.computeIfAbsent(name, k -> Launch.classLoader.defineClass(k, bytes));
+        }
+
+    }
+
+    public static void logCL(ClassLoader parent) {
+        Fugue.LOGGER.info("ClassLoader: {}", parent);
+    }
+
+    public static Class<?> loadClass(String name) {
+        Class<?> c = null;
+        try {
+            c = Launch.classLoader.findClass(name);
+        } catch (ClassNotFoundException | NoClassDefFoundError ignored) {}
+        return c;
+    }
+
 
     public static byte[] redirectGetClassByte(LaunchClassLoader instance, String s) throws IOException {
         byte[] bytes = null;
@@ -127,5 +182,70 @@ public class HookHelper {
             }
         } catch (ClassNotFoundException ignored) {
         }
+    }
+
+    public static boolean isClassExist(String clazz) {
+        return Launch.classLoader.isClassExist(clazz);
+    }
+
+    public static Object computeIfAbsent(Map<Object, Object> map, Object key, Function<Object, Object> function) {
+        if (map.containsKey(key)) {
+            return map.get(key);
+        } else {
+            Object value = function.apply(key);
+            map.put(key, value);
+            return value;
+        }
+    }
+
+    public static boolean isInitialized(File file) {
+        try {
+            return Arrays.asList(Launch.classLoader.getURLs()).contains(file.toURI().toURL());
+        } catch (MalformedURLException e) {
+            return false;
+        }
+    }
+
+    public static void addToClasspath(File file) {
+        try {
+            Launch.classLoader.addURL(file.toURI().toURL());
+        } catch (MalformedURLException ignored) {}
+    }
+
+    public static HashMap<String, Object> essential$gatherEnvironmentDetails() {
+        HashMap<String, Object> hardwareMap = new HashMap<>();
+        try { hardwareMap.put("cpu", new SystemInfo().getHardware().getProcessor().getProcessorIdentifier().getName()); } catch (Throwable ignored) {}
+        hardwareMap.putIfAbsent("cpu", "UNKNOWN");
+        hardwareMap.put("gpu", GL11.glGetString(GL11.GL_RENDERER));
+        hardwareMap.put("allocatedMemory", (Runtime.getRuntime().maxMemory() / 1024L / 1024L));
+        try {
+            hardwareMap.put("os", System.getProperty("os.name", "UNKNOWN"));
+            hardwareMap.put("osVersion", System.getProperty("os.version", "UNKNOWN"));
+        }catch (Throwable e) {}
+        hardwareMap.putIfAbsent("os", "UNKNOWN");
+        hardwareMap.putIfAbsent("osVersion", "UNKNOWN");
+        return hardwareMap;
+    }
+
+    public static String[] listToArray(List<String> list) {
+        return list.toArray(new String[0]);
+    }
+
+    public static <V extends @Nullable Object> void addCallback(
+            final ListenableFuture<V> future,
+            final FutureCallback<? super V> callback) {
+        Futures.addCallback(future, callback, Runnable::run);
+    }
+
+    public static boolean deleteFile(File file) {
+        boolean success = false;
+        try {
+            FileUtils.deleteDirectory(file);
+            success = true;
+        } catch (IOException e) {
+            Fugue.LOGGER.error("Failed to delete file: {}", file.getAbsolutePath());
+            Fugue.LOGGER.error("Caused by: {}", e);
+        }
+        return success;
     }
 }
