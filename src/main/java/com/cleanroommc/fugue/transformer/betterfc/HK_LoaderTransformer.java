@@ -24,6 +24,7 @@ public class HK_LoaderTransformer implements IExplicitTransformer {
                 }
             });
             bytes = cc.toBytecode();
+            cc.defrost();
         } catch (Throwable t) {
             Fugue.LOGGER.error("Exception {} on {}", t, this.getClass().getSimpleName());
         }
