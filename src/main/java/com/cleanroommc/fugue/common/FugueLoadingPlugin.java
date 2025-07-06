@@ -4,7 +4,6 @@ import com.cleanroommc.fugue.Reference;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.ICrashCallable;
 import com.cleanroommc.fugue.config.FugueConfig;
-import com.cleanroommc.fugue.transformer.tfcmedical.CommonRegistrar$Transformer;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
