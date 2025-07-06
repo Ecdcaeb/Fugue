@@ -18,7 +18,10 @@ import java.util.Map;
 @IFMLLoadingPlugin.Name("Fugue")
 public class FugueLoadingPlugin implements IFMLLoadingPlugin {
 
+    public static Logger LOGGER = LogManager.getLogger(Reference.MOD_NAME);
+
     static {
+        LOGGER.info("Fugue Version: " + Reference.MOD_VERSION);
         Launch.classLoader.addTransformerExclusion("com.cleanroommc.fugue.common.");
         Launch.classLoader.addTransformerExclusion("com.cleanroommc.fugue.helper.");
         for (var prefix : FugueConfig.extraTransformExclusions) {
@@ -31,36 +34,10 @@ public class FugueLoadingPlugin implements IFMLLoadingPlugin {
         TransformerHelper.registerTransformers();
     }
 
-    @Nullable
-    @Override
-    public String getSetupClass() {
-        FMLCommonHandler.instance().registerCrashCallable(new Setup.FugueCrashTag());
-        return "com.cleanroommc.fugue.common.FugueLoadingPlugin$Setup";
-    }
-
     public static void injectCascadingTweak(String tweakClassName)
     {
         @SuppressWarnings("unchecked")
         List<String> tweakClasses = (List<String>) Launch.blackboard.get("TweakClasses");
         tweakClasses.add(tweakClassName);
-    }
-
-    public static class Setup implements IFMLCallHook {
-        public void injectData(Map<String,Object> data) {}
-
-        public Void call() {
-            return null;
-        }
-
-        public static class FugueCrashTag implements ICrashCallable {
-	        @Override
-            public String call() {
-                return Reference.MOD_VERSION;
-            }
-            @Override
-            public String getLabel() {
-                return "Fugue Version";
-            }
-        }
     }
 }
