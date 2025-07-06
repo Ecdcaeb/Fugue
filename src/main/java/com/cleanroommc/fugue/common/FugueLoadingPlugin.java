@@ -18,7 +18,7 @@ import java.util.Map;
 @IFMLLoadingPlugin.Name("Fugue")
 public class FugueLoadingPlugin implements IFMLLoadingPlugin {
 
-    public static Logger LOGGER = LogManager.getLogger(Reference.MOD_NAME);
+    public static final Logger LOGGER = LogManager.getLogger(Reference.MOD_NAME);
 
     static {
         LOGGER.info("Fugue Version: " + Reference.MOD_VERSION);
