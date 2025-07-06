@@ -31,6 +31,13 @@ public class FugueLoadingPlugin implements IFMLLoadingPlugin {
         TransformerHelper.registerTransformers();
     }
 
+    @Nullable
+    @Override
+    public String getSetupClass() {
+        FMLCommonHandler.instance().registerCrashCallable(new Setup.FugueCrashTag());
+        return "com.cleanroommc.fugue.common.FugueLoadingPlugin$Setup";
+    }
+
     public static void injectCascadingTweak(String tweakClassName)
     {
         @SuppressWarnings("unchecked")
@@ -38,18 +45,22 @@ public class FugueLoadingPlugin implements IFMLLoadingPlugin {
         tweakClasses.add(tweakClassName);
     }
 
-    public static class FugueCrashTag implements ICrashCallable {
-        static {
-            FMLCommonHandler.instance().registerCrashCallable(new FugueCrashTag());
+    public static class Setup implements IFMLCallHook {
+        public void injectData(Map<String,Object> data) {}
+
+        public Void call() {
+            return null;
         }
-        
-	    @Override
-        public String call() {
-            return Reference.MOD_VERSION;
-        }
-        @Override
-        public String getLabel() {
-            return "Fugue Version";
+
+        public static class FugueCrashTag implements ICrashCallable {
+	        @Override
+            public String call() {
+                return Reference.MOD_VERSION;
+            }
+            @Override
+            public String getLabel() {
+                return "Fugue Version";
+            }
         }
     }
 }
